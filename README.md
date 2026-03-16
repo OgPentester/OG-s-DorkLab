@@ -29,8 +29,8 @@ _Coming soon_
 
 ```bash
 # Clone the repo
-git clone https://github.com/YOUR_USERNAME/ogs-dorklab.git
-cd ogs-dorklab
+git clone https://github.com/OgPentester/OG-s-DorkLab.git
+cd OG-s-DorkLab
 
 # Install dependencies
 npm install
