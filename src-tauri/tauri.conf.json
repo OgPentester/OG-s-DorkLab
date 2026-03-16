@@ -1,0 +1,32 @@
+{
+  "$schema": "https://raw.githubusercontent.com/nicovrc/tauri-schema/v2/schema.json",
+  "productName": "OGs DorkLab",
+  "version": "0.1.0",
+  "identifier": "com.dorklab.app",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420",
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "OG's DorkLab:",
+        "width": 1200,
+        "height": 800,
+        "minWidth": 900,
+        "minHeight": 600,
+        "resizable": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "plugins": {
+    "shell": {
+      "open": true
+    }
+  }
+}
