@@ -62,7 +62,6 @@ const run = spawnSync(cmd, tauriArgs, {
   cwd: root,
   stdio: "inherit",
   env: withCargoOnPath(),
-  shell: platform() === "win32",
 });
 
 if (run.error) {

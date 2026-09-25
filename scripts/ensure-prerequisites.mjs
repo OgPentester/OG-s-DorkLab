@@ -24,9 +24,13 @@ function warn(msg) {
 function run(cmd, args, options = {}) {
   return spawnSync(cmd, args, {
     encoding: "utf8",
-    shell: platform() === "win32",
+    shell: false,
     ...options,
   });
+}
+
+function whereCmd() {
+  return platform() === "win32" ? "where.exe" : "which";
 }
 
 function cargoBinDir() {
@@ -53,8 +57,7 @@ function findCargo() {
   if (existsSync(cargoExecutable())) {
     return cargoExecutable();
   }
-  const which = platform() === "win32" ? "where" : "which";
-  const found = run(which, ["cargo"]);
+  const found = run(whereCmd(), ["cargo"]);
   if (found.status === 0 && found.stdout?.trim()) {
     return found.stdout.trim().split(/\r?\n/)[0];
   }
@@ -144,9 +147,9 @@ async function ensureRust() {
 }
 
 function hasWindowsMsvcLinker() {
-  const cl = run("where", ["cl"]);
+  const cl = run(whereCmd(), ["cl"]);
   if (cl.status === 0) return true;
-  const link = run("where", ["link"]);
+  const link = run(whereCmd(), ["link"]);
   return link.status === 0;
 }
 
@@ -161,7 +164,7 @@ function ensureWindowsMsvc() {
     return;
   }
 
-  const winget = run("where", ["winget"]);
+  const winget = run(whereCmd(), ["winget"]);
   if (winget.status !== 0) {
     warn(
       "MSVC linker not found (required for Tauri on Windows). Install Build Tools:\n" +
@@ -173,8 +176,10 @@ function ensureWindowsMsvc() {
 
   log("MSVC not found — installing Visual Studio 2022 Build Tools (C++ workload) via winget…");
   log("This may take several minutes and can prompt for elevation.");
+  const vsInstallerArgs =
+    "--wait --quiet --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended";
   const install = run(
-    "winget",
+    "winget.exe",
     [
       "install",
       "--id",
@@ -182,8 +187,9 @@ function ensureWindowsMsvc() {
       "-e",
       "--accept-package-agreements",
       "--accept-source-agreements",
+      "--disable-interactivity",
       "--override",
-      "--wait --passive --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended",
+      vsInstallerArgs,
     ],
     { stdio: "inherit" },
   );

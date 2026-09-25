@@ -78,6 +78,8 @@ Re-run setup anytime: `npm run setup`
 | `cargo metadata` / `program not found` | Run `git pull`, then `npm run setup`. Our wrapper adds Rust to PATH for Tauri; you still need the latest repo with `scripts/`. |
 | `npm install` finishes in under a second with no `[setup]` lines | Old checkout — run `git pull` and `npm run setup`. |
 | `install-scripts blocked` (npm) | Run `npm run setup` manually; optional: `npm install-scripts approve esbuild` for Vite’s esbuild helper. |
+| MSVC / winget Build Tools failed | Install manually: [Tauri Windows prerequisites](https://v2.tauri.app/start/prerequisites/) or run the Visual Studio Installer and add **Desktop development with C++**. Then open a new terminal and retry. |
+| `'C:\Program' is not recognized` | Update the repo (`git pull`); fixed in recent versions (Node in `Program Files` + spawn). |
 
 ## Build for Distribution
 
