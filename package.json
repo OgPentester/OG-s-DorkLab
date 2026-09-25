@@ -9,8 +9,10 @@
     "preview": "vite preview",
     "setup": "node scripts/ensure-prerequisites.mjs",
     "postinstall": "node scripts/ensure-prerequisites.mjs",
-    "pretauri": "node scripts/ensure-prerequisites.mjs",
-    "tauri": "tauri"
+    "tauri": "node scripts/run-tauri.mjs"
+  },
+  "allowScripts": {
+    "esbuild": true
   },
   "dependencies": {
     "@tauri-apps/api": "^2",

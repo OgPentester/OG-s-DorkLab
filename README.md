@@ -35,21 +35,49 @@ Manual installs: [Rust](https://rustup.rs/), [Tauri prerequisites](https://v2.ta
 
 ## Development
 
-```bash
-# Clone the repo
+**Windows (Command Prompt)** — run each line below; do **not** paste lines that start with `#` (those are only comments in Mac/Linux docs).
+
+```bat
 git clone https://github.com/OgPentester/OG-s-DorkLab.git
 cd OG-s-DorkLab
-
-# Install Node deps + Rust (and Windows build tools if needed)
+git pull
 npm install
-
-# If Rust was just installed, open a new terminal so PATH includes cargo
-
-# Run in development mode
+npm run setup
 npm run tauri dev
 ```
 
+If `git clone` says the folder already exists, you have an old copy — update it instead of cloning again:
+
+```bat
+cd OG-s-DorkLab
+git pull
+npm install
+npm run setup
+npm run tauri dev
+```
+
+**Mac / Linux**
+
+```bash
+git clone https://github.com/OgPentester/OG-s-DorkLab.git
+cd OG-s-DorkLab
+npm install
+npm run setup
+npm run tauri dev
+```
+
+After Rust installs for the first time, open a **new** terminal window, `cd` back into the project, then run `npm run tauri dev` again.
+
 Re-run setup anytime: `npm run setup`
+
+### Troubleshooting
+
+| Problem | Fix |
+|--------|-----|
+| `'#' is not recognized...` (Windows) | You pasted a comment line. Run only the commands in the blocks above. |
+| `cargo metadata` / `program not found` | Run `git pull`, then `npm run setup`. Our wrapper adds Rust to PATH for Tauri; you still need the latest repo with `scripts/`. |
+| `npm install` finishes in under a second with no `[setup]` lines | Old checkout — run `git pull` and `npm run setup`. |
+| `install-scripts blocked` (npm) | Run `npm run setup` manually; optional: `npm install-scripts approve esbuild` for Vite’s esbuild helper. |
 
 ## Build for Distribution
 

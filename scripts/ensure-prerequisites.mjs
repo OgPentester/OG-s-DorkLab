@@ -5,7 +5,8 @@
 import { spawnSync } from "child_process";
 import { createWriteStream, existsSync, unlinkSync } from "fs";
 import { homedir, platform, tmpdir } from "os";
-import { join } from "path";
+import { join, resolve } from "path";
+import { fileURLToPath } from "url";
 import { pipeline } from "stream/promises";
 import { get as httpsGet } from "https";
 
@@ -227,7 +228,19 @@ async function verifyTauriWorkspace() {
   }
 }
 
-async function main() {
+function requireCargoOrExit() {
+  const cargo = findCargo();
+  if (cargo && cargoWorks(cargo)) {
+    return;
+  }
+  throw new Error(
+    "cargo is still not available. If Rust was just installed, close this window, open a new " +
+      "Command Prompt, cd to the project folder, run npm run setup, then npm run tauri dev. " +
+      "Or install Rust manually: https://rustup.rs/",
+  );
+}
+
+export async function runPrerequisiteSetup() {
   if (SKIP) {
     log("Skipped (SKIP_PREREQ_SETUP=1)");
     return;
@@ -236,10 +249,21 @@ async function main() {
   ensureNodeVersion();
   await ensureRust();
   ensureWindowsMsvc();
+  requireCargoOrExit();
   await verifyTauriWorkspace();
 }
 
-main().catch((err) => {
-  console.error(`[setup] ${err.message}`);
-  process.exit(1);
-});
+async function main() {
+  await runPrerequisiteSetup();
+}
+
+const isDirectRun =
+  process.argv[1] &&
+  resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url));
+
+if (isDirectRun) {
+  main().catch((err) => {
+    console.error(`[setup] ${err.message}`);
+    process.exit(1);
+  });
+}
