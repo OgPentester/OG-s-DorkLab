@@ -22,8 +22,16 @@ _Coming soon_
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/) (v18+)
-- [Rust](https://rustup.rs/)
-- [Tauri CLI](https://tauri.app/start/prerequisites/)
+- **Rust + Windows C++ tools** — installed automatically on `npm install` (see below)
+- Tauri CLI is included as an npm dev dependency (no global install)
+
+On **Windows**, the setup script can also install **Visual Studio 2022 Build Tools** (C++ workload) via `winget` when the MSVC linker is missing. That step may require administrator approval and takes several minutes.
+
+To skip automatic setup (e.g. CI with its own Rust/action): `SKIP_PREREQ_SETUP=1 npm install`
+
+To skip only the Visual Studio / winget step: `SKIP_VS_BUILD_TOOLS=1 npm install`
+
+Manual installs: [Rust](https://rustup.rs/), [Tauri prerequisites](https://v2.tauri.app/start/prerequisites/)
 
 ## Development
 
@@ -32,12 +40,16 @@ _Coming soon_
 git clone https://github.com/OgPentester/OG-s-DorkLab.git
 cd OG-s-DorkLab
 
-# Install dependencies
+# Install Node deps + Rust (and Windows build tools if needed)
 npm install
+
+# If Rust was just installed, open a new terminal so PATH includes cargo
 
 # Run in development mode
 npm run tauri dev
 ```
+
+Re-run setup anytime: `npm run setup`
 
 ## Build for Distribution
 
